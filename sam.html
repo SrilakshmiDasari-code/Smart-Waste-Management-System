@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoTrack - Smart Waste Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            box-sizing: border-box;
+        }
+        .fade-in {
+            animation: fadeIn 0.3s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .card-hover {
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .card-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-green-50 to-blue-50 min-h-screen">
+    <!-- App Logo & Main Selection -->
+    <div id="mainScreen" class="min-h-screen flex flex-col items-center justify-center p-6">
+        <div class="text-center mb-12 fade-in">
+            <div class="w-24 h-24 mx-auto mb-6 bg-gradient-to-r from-green-500 to-blue-500 rounded-full flex items-center justify-center">
+                <span class="text-4xl">🌱</span>
+            </div>
+            <h1 class="text-4xl font-bold text-gray-800 mb-2">EcoTrack</h1>
+            <p class="text-gray-600">Smart Waste Management System</p>
+        </div>
+        
+        <div class="space-y-4 w-full max-w-sm">
+            <button onclick="showUserLogin()" class="w-full bg-green-500 hover:bg-green-600 text-white py-4 px-6 rounded-xl font-semibold text-lg card-hover flex items-center justify-center space-x-3">
+                <span class="text-2xl">👤</span>
+                <span>User Login</span>
+            </button>
+            <button onclick="showAdminLogin()" class="w-full bg-blue-500 hover:bg-blue-600 text-white py-4 px-6 rounded-xl font-semibold text-lg card-hover flex items-center justify-center space-x-3">
+                <span class="text-2xl">⚙️</span>
+                <span>Admin Login</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- User Login Screen -->
+    <div id="userLoginScreen" class="hidden min-h-screen flex flex-col items-center justify-center p-6">
+        <button onclick="showMainScreen()" class="absolute top-6 left-6 bg-white p-3 rounded-full shadow-lg hover:shadow-xl">
+            <span class="text-xl">←</span>
+        </button>
+        
+        <div class="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md fade-in">
+            <div class="text-center mb-8">
+                <h2 class="text-2xl font-bold text-gray-800 mb-2">User Sign In</h2>
+                <p class="text-gray-600">Choose your preferred sign-in method</p>
+            </div>
+            
+            <div class="space-y-4">
+                <button onclick="signInWithGoogle()" class="w-full bg-red-500 hover:bg-red-600 text-white py-3 px-4 rounded-lg font-medium flex items-center justify-center space-x-3">
+                    <span class="text-xl">🔍</span>
+                    <span>Sign in with Google</span>
+                </button>
+                
+                <div class="text-center text-gray-500">or</div>
+                
+                <button onclick="showEmailLogin()" class="w-full bg-gray-700 hover:bg-gray-800 text-white py-3 px-4 rounded-lg font-medium flex items-center justify-center space-x-3">
+                    <span class="text-xl">📧</span>
+                    <span>Sign in with Email</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Email Login Form -->
+    <div id="emailLoginScreen" class="hidden min-h-screen flex flex-col items-center justify-center p-6">
+        <button onclick="showUserLogin()" class="absolute top-6 left-6 bg-white p-3 rounded-full shadow-lg hover:shadow-xl">
+            <span class="text-xl">←</span>
+        </button>
+        
+        <div class="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md fade-in">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">Email Sign In</h2>
+            
+            <form onsubmit="signInWithEmail(event)" class="space-y-4">
+                <div>
+                    <label class="block text-gray-700 font-medium mb-2">Email</label>
+                    <input type="email" id="userEmail" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                </div>
+                
+                <div>
+                    <label class="block text-gray-700 font-medium mb-2">Password</label>
+                    <input type="password" id="userPassword" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                </div>
+                
+                <button type="submit" class="w-full bg-green-500 hover:bg-green-600 text-white py-3 px-4 rounded-lg font-medium">
+                    Sign In
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Admin Login Screen -->
+    <div id="adminLoginScreen" class="hidden min-h-screen flex flex-col items-center justify-center p-6">
+        <button onclick="showMainScreen()" class="absolute top-6 left-6 bg-white p-3 rounded-full shadow-lg hover:shadow-xl">
+            <span class="text-xl">←</span>
+        </button>
+        
+        <div class="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md fade-in">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">Admin Login</h2>
+            
+            <form onsubmit="adminSignIn(event)" class="space-y-4">
+                <div>
+                    <label class="block text-gray-700 font-medium mb-2">Admin Email</label>
+                    <input type="email" id="adminEmail" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                </div>
+                
+                <div>
+                    <label class="block text-gray-700 font-medium mb-2">Password</label>
+                    <input type="password" id="adminPassword" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                </div>
+                
+                <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white py-3 px-4 rounded-lg font-medium">
+                    Admin Sign In
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- User Dashboard -->
+    <div id="userDashboard" class="hidden min-h-screen bg-gray-50">
+        <!-- Header -->
+        <div class="bg-white shadow-sm p-4">
+            <div class="flex justify-between items-center">
+                <h1 class="text-xl font-bold text-gray-800">EcoTrack Dashboard</h1>
+                <div class="text-sm text-gray-600">Welcome, User!</div>
+            </div>
+        </div>
+
+        <!-- Main Content Area -->
+        <div id="dashboardContent" class="flex-1 p-4 pb-20">
+            <!-- Home Section (Default) -->
+            <div id="homeSection" class="space-y-6">
+                <!-- Photo Upload Section -->
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-semibold text-gray-800">📸 Upload Waste Photo</h3>
+                    </div>
+                    
+                    <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+                        <input type="file" id="photoUpload" accept="image/*" class="hidden" onchange="handlePhotoUpload(event)">
+                        <button onclick="document.getElementById('photoUpload').click()" class="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg font-medium">
+                            Choose Photo
+                        </button>
+                        <p class="text-gray-500 mt-2">Upload a photo of waste for proper disposal</p>
+                        
+                        <div class="mt-4">
+                            <label class="block text-gray-700 font-medium mb-2">Location Details</label>
+                            <input type="text" id="locationInput" placeholder="Enter your location" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Collection Schedule -->
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">🗓️ Collection Schedule</h3>
+                    <div class="bg-blue-50 p-4 rounded-lg">
+                        <p class="font-medium text-blue-800">Next Collection: Tomorrow 8:00 AM</p>
+                        <p class="text-blue-600">Collection Point: Main Street Junction</p>
+                    </div>
+                </div>
+
+                <!-- Waste Types -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                        <h4 class="font-semibold text-gray-800 mb-3 flex items-center">
+                            <span class="text-2xl mr-2">📄</span>
+                            Dry Waste
+                        </h4>
+                        <p class="text-sm text-gray-600 mb-2">Examples:</p>
+                        <ul class="text-sm text-gray-500 space-y-1">
+                            <li>• Paper, cardboard</li>
+                            <li>• Plastic bottles</li>
+                            <li>• Metal cans</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                        <h4 class="font-semibold text-gray-800 mb-3 flex items-center">
+                            <span class="text-2xl mr-2">🥬</span>
+                            Wet Waste
+                        </h4>
+                        <p class="text-sm text-gray-600 mb-2">Examples:</p>
+                        <ul class="text-sm text-gray-500 space-y-1">
+                            <li>• Food scraps</li>
+                            <li>• Vegetable peels</li>
+                            <li>• Garden waste</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                        <h4 class="font-semibold text-gray-800 mb-3 flex items-center">
+                            <span class="text-2xl mr-2">🥤</span>
+                            Plastic Waste
+                        </h4>
+                        <p class="text-sm text-gray-600 mb-2">Examples:</p>
+                        <ul class="text-sm text-gray-500 space-y-1">
+                            <li>• Plastic bags</li>
+                            <li>• Containers</li>
+                            <li>• Packaging materials</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                        <h4 class="font-semibold text-gray-800 mb-3 flex items-center">
+                            <span class="text-2xl mr-2">⚠️</span>
+                            Hazardous Waste
+                        </h4>
+                        <p class="text-sm text-gray-600 mb-2">Examples:</p>
+                        <ul class="text-sm text-gray-500 space-y-1">
+                            <li>• Batteries</li>
+                            <li>• Electronics</li>
+                            <li>• Chemicals</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Nearby Section -->
+            <div id="nearbySection" class="hidden space-y-4">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">📍 Nearby Stations</h2>
+                
+                <div class="space-y-4">
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <div class="flex justify-between items-center mb-3">
+                            <h3 class="font-semibold text-gray-800">Main Street Station</h3>
+                            <span class="bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm font-medium">85% Full</span>
+                        </div>
+                        <p class="text-gray-600 text-sm">Distance: 0.2 km</p>
+                        <div class="w-full bg-gray-200 rounded-full h-2 mt-3">
+                            <div class="bg-red-500 h-2 rounded-full" style="width: 85%"></div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <div class="flex justify-between items-center mb-3">
+                            <h3 class="font-semibold text-gray-800">Park Avenue Station</h3>
+                            <span class="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm font-medium">60% Full</span>
+                        </div>
+                        <p class="text-gray-600 text-sm">Distance: 0.5 km</p>
+                        <div class="w-full bg-gray-200 rounded-full h-2 mt-3">
+                            <div class="bg-yellow-500 h-2 rounded-full" style="width: 60%"></div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <div class="flex justify-between items-center mb-3">
+                            <h3 class="font-semibold text-gray-800">Green Valley Station</h3>
+                            <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">25% Full</span>
+                        </div>
+                        <p class="text-gray-600 text-sm">Distance: 0.8 km</p>
+                        <div class="w-full bg-gray-200 rounded-full h-2 mt-3">
+                            <div class="bg-green-500 h-2 rounded-full" style="width: 25%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rewards Section -->
+            <div id="rewardsSection" class="hidden space-y-6">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">🏆 Rewards</h2>
+                
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Your Progress</h3>
+                    <div class="flex items-center space-x-4 mb-4">
+                        <div class="text-3xl">📸</div>
+                        <div>
+                            <p class="font-medium">Photos Uploaded: <span id="photoCount">4</span></p>
+                            <p class="text-sm text-gray-600">2 photos = 1 card</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center space-x-4">
+                        <div class="text-3xl">🎴</div>
+                        <div>
+                            <p class="font-medium">Cards Earned: <span id="cardCount">2</span></p>
+                            <p class="text-sm text-gray-600">3 cards = 1 gift</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Available Badges</h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="text-center p-4 bg-green-50 rounded-lg">
+                            <div class="text-4xl mb-2">🌱</div>
+                            <p class="font-medium text-green-800">Eco Starter</p>
+                            <p class="text-sm text-green-600">Upload 5 photos</p>
+                        </div>
+                        <div class="text-center p-4 bg-blue-50 rounded-lg">
+                            <div class="text-4xl mb-2">♻️</div>
+                            <p class="font-medium text-blue-800">Recycling Hero</p>
+                            <p class="text-sm text-blue-600">Sort 10 items correctly</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Section -->
+            <div id="settingsSection" class="hidden space-y-4">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">⚙️ Settings</h2>
+                
+                <div class="space-y-3">
+                    <button onclick="showProfile()" class="w-full bg-white rounded-xl shadow-lg p-4 text-left hover:shadow-xl transition-shadow">
+                        <div class="flex items-center space-x-3">
+                            <span class="text-2xl">👤</span>
+                            <span class="font-medium text-gray-800">Profile</span>
+                        </div>
+                    </button>
+
+                    <button onclick="showHelpCenter()" class="w-full bg-white rounded-xl shadow-lg p-4 text-left hover:shadow-xl transition-shadow">
+                        <div class="flex items-center space-x-3">
+                            <span class="text-2xl">❓</span>
+                            <span class="font-medium text-gray-800">Help Center</span>
+                        </div>
+                    </button>
+
+                    <button onclick="showChangeAddress()" class="w-full bg-white rounded-xl shadow-lg p-4 text-left hover:shadow-xl transition-shadow">
+                        <div class="flex items-center space-x-3">
+                            <span class="text-2xl">📍</span>
+                            <span class="font-medium text-gray-800">Change Address</span>
+                        </div>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Profile Subsection -->
+            <div id="profileSection" class="hidden space-y-6">
+                <div class="flex items-center mb-6">
+                    <button onclick="showSettings()" class="mr-4 p-2 hover:bg-gray-100 rounded-full">
+                        <span class="text-xl">←</span>
+                    </button>
+                    <h2 class="text-2xl font-bold text-gray-800">👤 Profile</h2>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <div class="text-center mb-6">
+                        <div class="w-20 h-20 bg-green-500 rounded-full mx-auto mb-4 flex items-center justify-center">
+                            <span class="text-3xl text-white">👤</span>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-800">John Doe</h3>
+                        <p class="text-gray-600">john.doe@email.com</p>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-gray-700 font-medium mb-2">Phone</label>
+                            <p class="text-gray-600">+1 234 567 8900</p>
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 font-medium mb-2">Address</label>
+                            <p class="text-gray-600">123 Main Street, City, State 12345</p>
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 font-medium mb-2">Member Since</label>
+                            <p class="text-gray-600">January 2024</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Help Center Subsection -->
+            <div id="helpCenterSection" class="hidden space-y-6">
+                <div class="flex items-center mb-6">
+                    <button onclick="showSettings()" class="mr-4 p-2 hover:bg-gray-100 rounded-full">
+                        <span class="text-xl">←</span>
+                    </button>
+                    <h2 class="text-2xl font-bold text-gray-800">❓ Help Center</h2>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <div class="mb-6">
+                        <input type="text" placeholder="Search for help..." class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500">
+                    </div>
+                    
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Contact Garbage Collectors</h3>
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                            <span class="font-medium">Main Street Collector</span>
+                            <span class="text-blue-600">+1 234 567 8901</span>
+                        </div>
+                        <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                            <span class="font-medium">Park Avenue Collector</span>
+                            <span class="text-blue-600">+1 234 567 8902</span>
+                        </div>
+                        <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                            <span class="font-medium">Emergency Pickup</span>
+                            <span class="text-red-600">+1 234 567 8999</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Change Address Subsection -->
+            <div id="changeAddressSection" class="hidden space-y-6">
+                <div class="flex items-center mb-6">
+                    <button onclick="showSettings()" class="mr-4 p-2 hover:bg-gray-100 rounded-full">
+                        <span class="text-xl">←</span>
+                    </button>
+                    <h2 class="text-2xl font-bold text-gray-800">📍 Change Address</h2>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <form onsubmit="updateAddress(event)" class="space-y-4">
+                        <div>
+                            <label class="block text-gray-700 font-medium mb-2">Street Address</label>
+                            <input type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500" value="123 Main Street">
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 font-medium mb-2">City</label>
+                            <input type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500" value="City">
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 font-medium mb-2">State</label>
+                            <input type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500" value="State">
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 font-medium mb-2">ZIP Code</label>
+                            <input type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500" value="12345">
+                        </div>
+                        <button type="submit" class="w-full bg-green-500 hover:bg-green-600 text-white py-3 px-4 rounded-lg font-medium">
+                            Update Address
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-4 py-2">
+            <div class="flex justify-around">
+                <button onclick="showSection('home')" id="homeBtn" class="flex flex-col items-center py-2 px-3 text-green-500">
+                    <span class="text-xl mb-1">🏠</span>
+                    <span class="text-xs font-medium">Home</span>
+                </button>
+                <button onclick="showSection('nearby')" id="nearbyBtn" class="flex flex-col items-center py-2 px-3 text-gray-400">
+                    <span class="text-xl mb-1">📍</span>
+                    <span class="text-xs font-medium">Nearby</span>
+                </button>
+                <button onclick="showSection('rewards')" id="rewardsBtn" class="flex flex-col items-center py-2 px-3 text-gray-400">
+                    <span class="text-xl mb-1">🏆</span>
+                    <span class="text-xs font-medium">Rewards</span>
+                </button>
+                <button onclick="showSection('settings')" id="settingsBtn" class="flex flex-col items-center py-2 px-3 text-gray-400">
+                    <span class="text-xl mb-1">⚙️</span>
+                    <span class="text-xs font-medium">Settings</span>
+                </button>
+                <button onclick="logout()" class="flex flex-col items-center py-2 px-3 text-gray-400">
+                    <span class="text-xl mb-1">🚪</span>
+                    <span class="text-xs font-medium">Logout</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <div id="adminDashboard" class="hidden min-h-screen bg-gray-50">
+        <!-- Header -->
+        <div class="bg-white shadow-sm p-4">
+            <div class="flex justify-between items-center">
+                <h1 class="text-xl font-bold text-gray-800">Admin Dashboard</h1>
+                <button onclick="logout()" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-medium">
+                    Logout
+                </button>
+            </div>
+        </div>
+
+        <!-- Admin Content -->
+        <div class="p-6 space-y-6">
+            <!-- Alerts Section -->
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <h2 class="text-xl font-bold text-gray-800 mb-4">🚨 Collection Alerts</h2>
+                <div class="space-y-3">
+                    <div class="bg-red-50 border border-red-200 rounded-lg p-4">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <p class="font-medium text-red-800">Main Street Station - Critical</p>
+                                <p class="text-sm text-red-600">85% full - Immediate collection required</p>
+                            </div>
+                            <span class="bg-red-500 text-white px-3 py-1 rounded-full text-sm">High</span>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <p class="font-medium text-yellow-800">Park Avenue Station</p>
+                                <p class="text-sm text-yellow-600">60% full - Schedule collection soon</p>
+                            </div>
+                            <span class="bg-yellow-500 text-white px-3 py-1 rounded-full text-sm">Medium</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Statistics Section -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-2">📊 App Statistics</h3>
+                    <div class="space-y-2">
+                        <p class="text-2xl font-bold text-blue-600">1,247</p>
+                        <p class="text-sm text-gray-600">Active Users</p>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-2">📸 Photos Today</h3>
+                    <div class="space-y-2">
+                        <p class="text-2xl font-bold text-green-600">89</p>
+                        <p class="text-sm text-gray-600">Photos Uploaded</p>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-2">🗑️ Collections</h3>
+                    <div class="space-y-2">
+                        <p class="text-2xl font-bold text-purple-600">23</p>
+                        <p class="text-sm text-gray-600">Completed Today</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Photos Section -->
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <h2 class="text-xl font-bold text-gray-800 mb-4">📷 Recent User Photos</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <div class="bg-gray-100 h-32 rounded-lg mb-3 flex items-center justify-center">
+                            <span class="text-4xl">📸</span>
+                        </div>
+                        <p class="font-medium text-gray-800">User: John Doe</p>
+                        <p class="text-sm text-gray-600">Location: Main Street</p>
+                        <p class="text-sm text-gray-600">Type: Plastic Waste</p>
+                        <p class="text-xs text-gray-500">2 hours ago</p>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <div class="bg-gray-100 h-32 rounded-lg mb-3 flex items-center justify-center">
+                            <span class="text-4xl">📸</span>
+                        </div>
+                        <p class="font-medium text-gray-800">User: Jane Smith</p>
+                        <p class="text-sm text-gray-600">Location: Park Avenue</p>
+                        <p class="text-sm text-gray-600">Type: Organic Waste</p>
+                        <p class="text-xs text-gray-500">3 hours ago</p>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <div class="bg-gray-100 h-32 rounded-lg mb-3 flex items-center justify-center">
+                            <span class="text-4xl">📸</span>
+                        </div>
+                        <p class="font-medium text-gray-800">User: Mike Johnson</p>
+                        <p class="text-sm text-gray-600">Location: Green Valley</p>
+                        <p class="text-sm text-gray-600">Type: Dry Waste</p>
+                        <p class="text-xs text-gray-500">5 hours ago</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Screen navigation functions
+        function showMainScreen() {
+            hideAllScreens();
+            document.getElementById('mainScreen').classList.remove('hidden');
+        }
+
+        function showUserLogin() {
+            hideAllScreens();
+            document.getElementById('userLoginScreen').classList.remove('hidden');
+        }
+
+        function showEmailLogin() {
+            hideAllScreens();
+            document.getElementById('emailLoginScreen').classList.remove('hidden');
+        }
+
+        function showAdminLogin() {
+            hideAllScreens();
+            document.getElementById('adminLoginScreen').classList.remove('hidden');
+        }
+
+        function hideAllScreens() {
+            const screens = ['mainScreen', 'userLoginScreen', 'emailLoginScreen', 'adminLoginScreen', 'userDashboard', 'adminDashboard'];
+            screens.forEach(screen => {
+                document.getElementById(screen).classList.add('hidden');
+            });
+        }
+
+        // Authentication functions
+        function signInWithGoogle() {
+            // Simulate Google sign-in
+            setTimeout(() => {
+                showUserDashboard();
+            }, 1000);
+        }
+
+        function signInWithEmail(event) {
+            event.preventDefault();
+            const email = document.getElementById('userEmail').value;
+            const password = document.getElementById('userPassword').value;
+            
+            if (email && password) {
+                setTimeout(() => {
+                    showUserDashboard();
+                }, 1000);
+            }
+        }
+
+        function adminSignIn(event) {
+            event.preventDefault();
+            const email = document.getElementById('adminEmail').value;
+            const password = document.getElementById('adminPassword').value;
+            
+            if (email && password) {
+                setTimeout(() => {
+                    showAdminDashboard();
+                }, 1000);
+            }
+        }
+
+        function showUserDashboard() {
+            hideAllScreens();
+            document.getElementById('userDashboard').classList.remove('hidden');
+            showSection('home');
+        }
+
+        function showAdminDashboard() {
+            hideAllScreens();
+            document.getElementById('adminDashboard').classList.remove('hidden');
+        }
+
+        // Dashboard navigation
+        function showSection(section) {
+            // Hide all sections
+            const sections = ['homeSection', 'nearbySection', 'rewardsSection', 'settingsSection', 'profileSection', 'helpCenterSection', 'changeAddressSection'];
+            sections.forEach(s => {
+                document.getElementById(s).classList.add('hidden');
+            });
+
+            // Show selected section
+            document.getElementById(section + 'Section').classList.remove('hidden');
+
+            // Update navigation buttons
+            const buttons = ['homeBtn', 'nearbyBtn', 'rewardsBtn', 'settingsBtn'];
+            buttons.forEach(btn => {
+                const button = document.getElementById(btn);
+                if (button) {
+                    button.classList.remove('text-green-500');
+                    button.classList.add('text-gray-400');
+                }
+            });
+
+            const activeBtn = document.getElementById(section + 'Btn');
+            if (activeBtn) {
+                activeBtn.classList.remove('text-gray-400');
+                activeBtn.classList.add('text-green-500');
+            }
+        }
+
+        // Settings subsections
+        function showProfile() {
+            document.getElementById('settingsSection').classList.add('hidden');
+            document.getElementById('profileSection').classList.remove('hidden');
+        }
+
+        function showHelpCenter() {
+            document.getElementById('settingsSection').classList.add('hidden');
+            document.getElementById('helpCenterSection').classList.remove('hidden');
+        }
+
+        function showChangeAddress() {
+            document.getElementById('settingsSection').classList.add('hidden');
+            document.getElementById('changeAddressSection').classList.remove('hidden');
+        }
+
+        function showSettings() {
+            const subsections = ['profileSection', 'helpCenterSection', 'changeAddressSection'];
+            subsections.forEach(s => {
+                document.getElementById(s).classList.add('hidden');
+            });
+            document.getElementById('settingsSection').classList.remove('hidden');
+        }
+
+        // Utility functions
+        function handlePhotoUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                alert('Photo uploaded successfully! Remember to add location details.');
+                // Update photo count for rewards
+                const currentCount = parseInt(document.getElementById('photoCount').textContent);
+                document.getElementById('photoCount').textContent = currentCount + 1;
+                
+                // Update card count (2 photos = 1 card)
+                const newCardCount = Math.floor((currentCount + 1) / 2);
+                document.getElementById('cardCount').textContent = newCardCount;
+            }
+        }
+
+        function updateAddress(event) {
+            event.preventDefault();
+            alert('Address updated successfully!');
+            showSettings();
+        }
+
+        function logout() {
+            showMainScreen();
+        }
+
+        // Initialize app
+        document.addEventListener('DOMContentLoaded', function() {
+            showMainScreen();
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'984dc21fa3e87629',t:'MTc1ODgzNzI0OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
